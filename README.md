@@ -1,5 +1,5 @@
 # Description
-Extracts keyframes from a given video file. The keyframes are then  convert to grayscale and split in a grid with specified dimensions. The median  value of all the pixels in each grid cell together with a timestamp of the keyframe are written to a CSV file. The file is based on ffmpeg example files. 
+Extracts keyframes from a given video file. The keyframes are then  convert to grayscale and split in a grid with specified dimensions. The median  value of all the pixels in each grid cell together with a timestamp of the keyframe are written to a CSV file. The file is based on ffmpeg example files and it should be able to work with different types of vide formats/codecs - mp4, mpeg1, mpeg2, gp3 etc. 
 
 # Compliation
 The program requires ffmpeg 4 to work properly. It was tested on ubuntu  18.04 and MacOS Mojave. Since ffmpeg is available on Windows it should be possible to run on Windows too, however it was not tested.
