@@ -1,33 +1,8 @@
 /*
- * Copyright (c) 2012 Stefano Sabatini
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * This file is based on demuxing_decoding.c example from ffmpeg library
+ * 
  */
 
-/**
- * @file
- * Demuxing and decoding example.
- *
- * Show how to use the libavformat and libavcodec API to demux and
- * decode audio and video data.
- * @example demuxing_decoding.c
- */
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -66,31 +41,8 @@ static AVPacket pkt;
 
 static const int refcount = 0;
 
-// static void pgm_save(unsigned char *buf, int wrap, int xsize, int ysize,
-//                      char *filename)
-// {
-//     FILE *f;
-//     int i;
 
-//     f = fopen(filename,"w");
-//     fprintf(f, "P5\n%d %d\n%d\n", xsize, ysize, 255);
-//     for (i = 0; i < ysize; i++)
-//         fwrite(buf + i * wrap, 1, xsize, f);
-//     fclose(f);
-// }
-
-static int median_compare_func( const void *a, const void *b) {
-  return *(char*)a - *(char*)b;
-}
-
-static uint8_t get_median(unsigned char *data, int size){
-    qsort((void*)data, (size_t)size, (size_t) sizeof(unsigned char),median_compare_func);
-    if(size%2 != 0) {
-        return (int) data[size/2];
-    }
-    return (int)(data[size/2-1] + data[size/2])/2;
-}
-
+// initializes variables based on image and grid dimensions
 static int init_grid_variables(){
     grid_cell_w = width/grid_w;
     grid_cell_h = height/grid_h;
@@ -108,6 +60,36 @@ static int init_grid_variables(){
     return 0;
 }
 
+// quicksort comparator
+static int median_compare_func( const void *a, const void *b) {
+  return *(char*)a - *(char*)b;
+}
+
+// finds a median of an array by fist sorting the array inplace 
+static uint8_t get_median(unsigned char *data, int size){
+    
+    qsort((void*)data, (size_t)size, (size_t) sizeof(unsigned char),median_compare_func);
+
+    if(size%2 != 0) {
+        return (int) data[size/2];
+    }
+    return (int)(data[size/2-1] + data[size/2])/2;
+}
+
+// static void pgm_save(unsigned char *buf, int wrap, int xsize, int ysize,
+//                      char *filename)
+// {
+//     FILE *f;
+//     int i;
+
+//     f = fopen(filename,"w");
+//     fprintf(f, "P5\n%d %d\n%d\n", xsize, ysize, 255);
+//     for (i = 0; i < ysize; i++)
+//         fwrite(buf + i * wrap, 1, xsize, f);
+//     fclose(f);
+// }
+
+// splits the provided image in grid cells and computes the median of each grid cell
 static int split_grid(unsigned char*data, int width, int height){
     int k,i,j,img_y_offset,img_x_offset;
 
@@ -119,13 +101,13 @@ static int split_grid(unsigned char*data, int width, int height){
                 memcpy(&tmp_data[j*grid_cell_w], &data[img_x_offset+j*width], grid_cell_w);
             }
             int median = get_median(tmp_data, grid_cell_pix_num);
-            // TODO make pointer
             median_data[i*grid_w+k] = median;
         }
     }
     return 0;
 }
 
+// reads a keyframe from the video, converts it to grayscale and writes median statistics in cvs file
 static int decode_packet(int *got_frame, int cached)
 {
     int ret = 0, k;
@@ -173,6 +155,7 @@ static int decode_packet(int *got_frame, int cached)
     return decoded;
 }
 
+// detects codec base on input file
 static int open_codec_context(int *stream_idx,
                               AVCodecContext **dec_ctx, AVFormatContext *fmt_ctx, enum AVMediaType type)
 {

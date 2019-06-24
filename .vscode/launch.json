@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/key_frame_grid_mean",
+            "args": [
+                //"SampleVideo_176x144_1mb.3gp",
+                //"SampleVideo_640x360_1mb.mp4",
+                //"SampleVideo_360x240_1mb.mp4",
+                "SampleVideo_1280x720_1mb.mp4",
+                //"hale_bopp_2.mpg",
+                "out.cvs", 
+                "3x3"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            }
+        }
+    ]
+}
