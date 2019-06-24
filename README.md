@@ -4,7 +4,7 @@ Extracts keyframes from a given video file. The keyframes are then  convert to g
 # Compliation
 The program requires ffmpeg 4 to work properly. It was tested on ubuntu  18.04 and MacOS Mojave. Since ffmpeg is available on Windows it should be possible to run on Windows too, however it was not tested.
 On ubuntu ffmpeg version needs to be updated to 4.X. For more information on this [link](http://ubuntuhandbook.org/index.php/2018/10/install-ffmpeg-4-0-2-ubuntu-18-0416-04/)
-Also the *-dev packages part of the ffmpeg release need to be installed for the program to be compiled
+Also the *-dev packages part of the ffmpeg release need to be installed for the program to be compiled: [link](https://askubuntu.com/questions/766606/where-are-the-headers-of-libavcodec-and-libavformat-located?rq=1)
 On MacOS ffmpeg can be installed via  [brew](https://trac.ffmpeg.org/wiki/CompilationGuide/macOS).
 The Makefile also uses the pkg-config to identify the correct location of headers and libraries for the local ffmpeg version
 ```
