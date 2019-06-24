@@ -1,5 +1,6 @@
 # Description
 Extracts keyframes from a given video file. The keyframes are then  convert to grayscale and split in a grid with specified dimensions. The median  value of all the pixels in each grid cell together with a timestamp of the keyframe are written to a CSV file. The file is based on ffmpeg example files. 
+The program will open the vide file and will try to create 
 
 # Compliation
 The program requires ffmpeg 4 to work properly. It was tested on ubuntu  18.04 and MacOS Mojave. Since ffmpeg is available on Windows it should be possible to run on Windows too, however it was not tested.
@@ -19,3 +20,6 @@ make -f Makefile
 **output_cvs_file is name** of output file where frame data will be written.
 
 **grid_widthxgrid_height** is the width and height of grind for example 3x3
+
+# Note
+Currently keyframes are detected from the decompressed fram AVFrame structure, it looks like that the AVPacket also has a flag that indicates if a packet is keyframe. In that case the program can run much faster since it will have to decompress only packets that are keyframes instead of all packets as currently implemented.
