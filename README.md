@@ -20,5 +20,7 @@ make -f Makefile
 
 **grid_widthxgrid_height** is the width and height of grind for example 3x3
 
-# Note
+# Notes
 Currently keyframes are detected from the decompressed frame AVFrame structure, it looks like that the AVPacket also has a flag that indicates if a packet is keyframe. In that case the program can be modified to run much faster since it will have to decompress only packets that are keyframes instead of all packets as currently implemented.
+
+Also as currently implemented the grid might not containg 100% of the image. Since integer division is used to calculate the width of each grid cell in pixels (image_width/cell_columns), the reminder of the division will be a number smaller that the cell width in pixels and will not be part of the medean calculations. The same is valid for the last few rows of the image. This can be improved relavley easy and will happen only if image_width/cell_columns is not a whole number.  
