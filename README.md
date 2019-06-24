@@ -21,4 +21,4 @@ make -f Makefile
 **grid_widthxgrid_height** is the width and height of grind for example 3x3
 
 # Note
-Currently keyframes are detected from the decompressed fram AVFrame structure, it looks like that the AVPacket also has a flag that indicates if a packet is keyframe. In that case the program can run much faster since it will have to decompress only packets that are keyframes instead of all packets as currently implemented.
+Currently keyframes are detected from the decompressed frame AVFrame structure, it looks like that the AVPacket also has a flag that indicates if a packet is keyframe. In that case the program can be modified to run much faster since it will have to decompress only packets that are keyframes instead of all packets as currently implemented.
